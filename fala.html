@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+    </head>
+
+<body class="container">
+    
+    <h1> Teste de Reconhecimento de Voz</h1>
+    <button id="fala" class="btn btn-primary"> Click para Falar</button>
+    <div id="saida">
+
+    </div>
+    <script>
+        var SpeechSDK;
+        var subscriptionKey = "4ad50cd7805f4a8c86bf9115ab298167";
+        var serviceRegion = "eastus"; 
+        var originalLang = "pt-br";
+        var speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
+
+        $("#fala").click(function(){
+            getText();
+        });
+        function getText(){
+            speechConfig.speechRecognitionLanguage = originalLang;
+            var audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+            var recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig); 
+            recognizer.recognizeOnceAsync(function(result){
+                $("#saida").append(result.text+"<br>" );
+                recognizer.close();
+                recognizer = undefined;
+            });
+        }
+
+    </script>
+</body>
+</html>
